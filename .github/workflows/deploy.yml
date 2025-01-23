@@ -1,0 +1,33 @@
+name: Deploy React App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on pushes to the 'main' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use an Ubuntu environment for building your app
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2  # Step to checkout your repository's code
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2  # Set up Node.js environment
+        with:
+          node-version: '14'  # Specify the version of Node.js (you can change it if needed)
+
+      - name: Install Dependencies
+        run: npm install  # Install project dependencies
+
+      - name: Build the React App
+        run: npm run build  # Build your React app for production
+
+      - name: Install gh-pages
+        run: npm install gh-pages --save-dev  # Install gh-pages to deploy to GitHub Pages
+
+      - name: Deploy to GitHub Pages
+        run: npm run deploy  # Deploy the app to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
